@@ -65,6 +65,11 @@ app.use(cors({
 app.use(express.json());
 app.use('/api/', limiter);
 
+// Root endpoint
+app.get('/', (req, res) => {
+    res.json({ status: 'OK', message: 'CyArt Meeting API is running. Access /api/health for detailed status.' });
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
     res.json({ status: 'OK', message: 'CyArt Meeting API is running' });
