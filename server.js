@@ -3,7 +3,7 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const fs = require('fs');
 const path = require('path');
-const { sendMeetingEmail } = require('./emailService');
+const { createMeetingEvent } = require('./calendarService');
 require('dotenv').config();
 
 const app = express();
@@ -132,8 +132,8 @@ app.post('/api/schedule-meeting', async (req, res) => {
             referral: referral || ''
         };
 
-        // Send email
-        const emailResult = await sendMeetingEmail(meetingData);
+        // Create Google Calendar event
+        const calendarResult = await createMeetingEvent(meetingData);
 
         // Save the booked slot
         if (!bookedSlots[date]) {
@@ -153,8 +153,8 @@ app.post('/api/schedule-meeting', async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: 'Meeting booked successfully! You will receive a confirmation email shortly.',
-            messageId: emailResult.messageId
+            message: 'Meeting booked successfully! A calendar event has been created.',
+            meetLink: calendarResult.meetLink
         });
 
     } catch (error) {

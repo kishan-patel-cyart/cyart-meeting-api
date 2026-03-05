@@ -9,6 +9,9 @@ yarn-error.log
 # Bookings data
 bookings.json
 
+# Google credentials (use GOOGLE_CREDENTIALS env var in production)
+google-credentials.json
+
 # OS files
 .DS_Store
 Thumbs.db
