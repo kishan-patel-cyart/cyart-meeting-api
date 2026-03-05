@@ -98,14 +98,6 @@ const createMeetingEvent = async (meetingData) => {
                 dateTime: isoEnd,
                 timeZone: 'Asia/Kolkata',
             },
-            conferenceData: {
-                createRequest: {
-                    requestId: `cyart-meeting-${Date.now()}`,
-                    conferenceSolutionKey: {
-                        type: 'hangoutsMeet'
-                    }
-                }
-            }
         };
 
         const calendarId = process.env.GOOGLE_CALENDAR_ID || 'primary';
@@ -113,7 +105,6 @@ const createMeetingEvent = async (meetingData) => {
         const response = await calendar.events.insert({
             calendarId: calendarId,
             resource: event,
-            conferenceDataVersion: 1,
         });
 
         console.log('Event created successfully:', response.data.htmlLink);
@@ -121,7 +112,7 @@ const createMeetingEvent = async (meetingData) => {
         return {
             success: true,
             eventId: response.data.id,
-            meetLink: response.data.hangoutLink
+            eventLink: response.data.htmlLink
         };
 
     } catch (error) {
