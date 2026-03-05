@@ -13,4 +13,4 @@ services:
       - key: EMAIL_PASS
         sync: false
       - key: FRONTEND_URL
-        value: https://cyart.io
+        value: https://cyart.in
