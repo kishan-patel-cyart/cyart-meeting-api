@@ -4,6 +4,7 @@ const rateLimit = require('express-rate-limit');
 const fs = require('fs');
 const path = require('path');
 const { createMeetingEvent } = require('./calendarService');
+const { createContactEvent } = require('./contactCalendarService');
 require('dotenv').config();
 
 const app = express();
@@ -163,6 +164,47 @@ app.post('/api/schedule-meeting', async (req, res) => {
             success: false,
             error: 'Failed to book meeting. Please try again or contact support.',
             details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
+    }
+});
+
+// Contact form endpoint
+app.post('/api/contact', async (req, res) => {
+    try {
+        const { name, email, company, message } = req.body;
+
+        // Validation
+        if (!name || !email || !company || !message) {
+            return res.status(400).json({
+                success: false,
+                error: 'Missing required fields: name, email, company, and message are required'
+            });
+        }
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({
+                success: false,
+                error: 'Invalid email format'
+            });
+        }
+
+        // Create calendar event
+        const result = await createContactEvent({ name, email, company, message });
+
+        console.log('Contact form submitted:', { name, email, company, timestamp: new Date().toISOString() });
+
+        res.status(200).json({
+            success: true,
+            message: 'Message received! We will get back to you shortly.'
+        });
+
+    } catch (error) {
+        console.error('Error processing contact form:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to submit message. Please try again or email us directly.'
         });
     }
 });
