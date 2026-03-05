@@ -40,7 +40,9 @@ const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:4173',
     'https://cyart.io',
-    'https://www.cyart.io'
+    'https://www.cyart.io',
+    'https://cyart.in',
+    'https://www.cyart.in'
 ];
 
 // Add custom FRONTEND_URL if set
