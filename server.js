@@ -7,6 +7,7 @@ const { sendMeetingEmail } = require('./emailService');
 require('dotenv').config();
 
 const app = express();
+app.set('trust proxy', 1); // Trust first proxy (Railway/Render reverse proxy)
 const PORT = process.env.PORT || 3001;
 
 // File to persist booked slots
